@@ -4,12 +4,9 @@ import com.squareup.moshi.Json
 
 data class Character(
     @Json(name="name")
-    val CharacterName: String,
+    val characterName: String,
     @Json(name="image")
-    val CharacterImage: String,
-    @Json(name="species")
-    val CharacterSpecies: String)
-
+    val characterImage: String)
 
 data class CharacterResponse(@Json(name="results")
 val result : List<Character>)

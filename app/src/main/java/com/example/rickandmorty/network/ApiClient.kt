@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 object ApiClient {
 
-    private val  BASE_URL = "https://rickandmortyapi.com/api"
+    private val  BASE_URL = "https://rickandmortyapi.com/api/"
 
     //Variable for moshi builder
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
