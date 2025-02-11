@@ -33,9 +33,21 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures{
+        viewBinding=true
+    }
 }
 
 dependencies {
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    implementation ("com.squareup.moshi:moshi-kotlin:1.9.0")
+
+    implementation ("com.squareup.retrofit2:converter-moshi:2.0.0")
+
+    implementation("io.coil-kt:coil:1.3.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
