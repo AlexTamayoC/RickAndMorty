@@ -17,8 +17,10 @@ class MainAdapter(val charactersList: List<Character>): RecyclerView.Adapter<Mai
         fun bindData(character: Character) {
             val name = itemView.findViewById<TextView>(R.id.name)
             val image = itemView.findViewById<ImageView>(R.id.image)
+            val species = itemView.findViewById<TextView>(R.id.namespecies)
 
             name.text = character.characterName
+            species.text = character.characterSpecies
             image.load(character.characterImage) {
                 transformations(CircleCropTransformation())
             }
