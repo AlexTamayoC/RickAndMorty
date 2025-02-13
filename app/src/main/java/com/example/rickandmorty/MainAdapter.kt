@@ -11,24 +11,22 @@ import coil.transform.CircleCropTransformation
 import android.widget.ImageView
 
 
-class MainAdapter(val charactersList: List<Character>): RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
+class MainAdapter(private val charactersList: MutableList<Character>) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     inner class MainViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(character: Character) {
             val name = itemView.findViewById<TextView>(R.id.name)
             val image = itemView.findViewById<ImageView>(R.id.image)
-            val species = itemView.findViewById<TextView>(R.id.namespecies)
 
             name.text = character.characterName
-            species.text = character.characterSpecies
             image.load(character.characterImage) {
                 transformations(CircleCropTransformation())
             }
-        }}
-
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item,parent, false))
+        return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_item, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -38,7 +36,13 @@ class MainAdapter(val charactersList: List<Character>): RecyclerView.Adapter<Mai
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bindData(charactersList[position])
     }
-}
 
+
+    fun updateData(newCharacters: List<Character>) {
+        val startPos = charactersList.size
+        charactersList.addAll(newCharacters)
+        notifyItemRangeInserted(startPos, newCharacters.size)
+    }
+}
 
 
