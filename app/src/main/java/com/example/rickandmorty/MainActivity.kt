@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity() {
                         val adapter =MainAdapter(state.data)
                         val recyclerView = findViewById<RecyclerView>(R.id.charactersView)
                         recyclerView?.layoutManager =
-                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                        recyclerView?.adapter
+                                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView?.adapter = adapter
                     }
                 }
 

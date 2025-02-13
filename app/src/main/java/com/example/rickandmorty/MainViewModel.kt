@@ -24,7 +24,7 @@ class MainViewModel (private val repository: Repository
 
     private fun fetchCharacter(){
 
-        val client = repository.getCharacters("5")
+        val client = repository.getCharacters("1")
         _characterLiveData.postValue(ScreenState.Loading(null))
         client.enqueue(object : Callback<CharacterResponse> {
             override fun onResponse(
