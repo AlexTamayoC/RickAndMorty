@@ -1,24 +1,17 @@
 package com.example.rickandmorty
 
-import android.media.Image
-import android.nfc.Tag
+
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
+import android.widget.ProgressBar
+
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ActionMode.Callback
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.rickandmorty.network.ApiClient
-import com.example.rickandmorty.network.CharacterResponse
-import retrofit2.Call
-import retrofit2.Response
+import com.example.rickandmorty.network.Character
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,12 +24,35 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        viewModel.characterLiveData.observe(this,{ characters ->
-            val adapter = MainAdapter(characters)
-            val recyclerView = findViewById<RecyclerView>(R.id.charactersView)
-            recyclerView?.layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            recyclerView?.adapter = adapter
+        viewModel.characterLiveData.observe(this, { state ->
+            processCharactersResponse(state)
         })
+    }
+
+        private fun processCharactersResponse(state: ScreenState<List<Character>?>){
+
+            val pb = findViewById<ProgressBar>(R.id.progressBar)
+
+            when(state){
+                is ScreenState.Loading -> {
+                    pb.visibility = View.VISIBLE
+                }
+                is ScreenState.Success -> {
+                    pb.visibility = View.GONE
+                    if(state.data != null){
+                        val adapter =MainAdapter(state.data)
+                        val recyclerView = findViewById<RecyclerView>(R.id.charactersView)
+                        recyclerView?.layoutManager =
+                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView?.adapter
+                    }
+                }
+
+                is ScreenState.Error ->{
+                    pb.visibility = View.GONE
+                    val view = pb.rootView
+                    Snackbar.make(view, state.message!!, Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 }
