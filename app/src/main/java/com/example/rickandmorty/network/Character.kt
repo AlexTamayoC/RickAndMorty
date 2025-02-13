@@ -8,7 +8,9 @@ data class Character(
     @Json(name="image")
     val characterImage: String,
     @Json(name="species")
-    val characterSpecies: String)
+    val characterSpecies: String,
+    @Json(name="id")
+    val characterId: Int)
 
 data class CharacterResponse(@Json(name="results")
 val result : List<Character>)
