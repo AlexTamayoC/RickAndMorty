@@ -13,15 +13,15 @@ import retrofit2.Response
 
 class MainViewModel(private val repository: Repository = Repository(ApiClient.apiService)) : ViewModel() {
 
-    private val _charactersLiveData = MutableLiveData<ScreenState<List<Character>?>>()
-    val characterLiveData: LiveData<ScreenState<List<Character>?>>
-        get() = _charactersLiveData
+    private val _pageCharactersLiveData = MutableLiveData<List<Character>>()
+    val pageCharactersLiveData: LiveData<List<Character>> get() = _pageCharactersLiveData
 
-    private val charactersList = mutableListOf<Character>()
-    private var currentPage = 1
+
+    private val accumulatedCharacters = mutableListOf<Character>()
+    var currentPage = 1
     private var isLoading = false
+    var totalPages = 1
     var hasMorePages = true
-    private var totalPages = 1
 
     init {
         fetchCharacters()
@@ -31,10 +31,7 @@ class MainViewModel(private val repository: Repository = Repository(ApiClient.ap
         if (isLoading || !hasMorePages) return
         isLoading = true
 
-        Log.d("PAGINACIÓN", "Cargando página: $currentPage de $totalPages")
-
-        _charactersLiveData.postValue(ScreenState.Loading(if (currentPage == 1) null else charactersList)) // Indicate loading, possibly with previous data
-
+        Log.d("PAGINACION", "Cargando página: $currentPage de $totalPages")
         val client = repository.getCharacters(currentPage.toString())
 
         client.enqueue(object : Callback<CharacterResponse> {
@@ -42,33 +39,28 @@ class MainViewModel(private val repository: Repository = Repository(ApiClient.ap
                 isLoading = false
                 if (response.isSuccessful) {
                     response.body()?.let { characterResponse ->
+                        val newCharacters = characterResponse.result
+
+                        accumulatedCharacters.addAll(newCharacters)
+
+                        _pageCharactersLiveData.postValue(newCharacters)
 
                         if (currentPage == 1) {
                             totalPages = characterResponse.pageInfo.pages
-                            charactersList.clear() // Still clear on the first page
-                            charactersList.addAll(characterResponse.result)
-                            _charactersLiveData.postValue(ScreenState.Success(charactersList.toList())) // Important: Create a new list!
-                        } else {
-                            val newList = charactersList + characterResponse.result // Create a *new* list
-                            charactersList.addAll(characterResponse.result) // Add to the existing list for pagination
-                            _charactersLiveData.postValue(ScreenState.Success(newList.toList())) // Post the *new* list
                         }
 
                         if (characterResponse.pageInfo.next != null) {
                             currentPage++
                         } else {
                             hasMorePages = false
-                            Log.d("PAGINACIÓN", "Se cargaron todos los personajes.")
+                            Log.d("PAGINACION", "Se han cargado todos los personajes.")
                         }
                     }
-                } else {
-                    _charactersLiveData.postValue(ScreenState.Error(response.code().toString(), if (currentPage == 1) null else charactersList))
                 }
             }
 
             override fun onFailure(call: Call<CharacterResponse>, t: Throwable) {
                 isLoading = false
-                _charactersLiveData.postValue(ScreenState.Error(t.message.toString(), if (currentPage == 1) null else charactersList))
             }
         })
     }
