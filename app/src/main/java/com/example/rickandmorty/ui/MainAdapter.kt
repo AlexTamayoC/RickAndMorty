@@ -17,6 +17,7 @@ class MainAdapter(private val charactersList: MutableList<Character>) : Recycler
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
     private var isLoading = false
+    private var data: MutableList<Character> = mutableListOf()
 
     inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(character: Character) {
@@ -60,6 +61,12 @@ class MainAdapter(private val charactersList: MutableList<Character>) : Recycler
         val startPos = charactersList.size
         charactersList.addAll(newCharacters)
         notifyItemRangeInserted(startPos, newCharacters.size)
+    }
+
+    fun updateData(newList: List<Character>) {
+        charactersList.clear()
+        charactersList.addAll(newList)
+        notifyDataSetChanged()
     }
 
     fun showLoading() {
