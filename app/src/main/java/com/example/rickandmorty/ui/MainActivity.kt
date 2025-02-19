@@ -64,7 +64,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.pageCharactersLiveData.observe(this) { newCharacters ->
             adapter.hideLoading()
             dataList.addAll(newCharacters)
-            adapter.appendData(newCharacters)
+            val query = searchView.query.toString()
+            if (query.isNotEmpty()) {
+                filterCharacters(query)
+            } else {
+                adapter.appendData(newCharacters)
+            }
         }
     }
 
