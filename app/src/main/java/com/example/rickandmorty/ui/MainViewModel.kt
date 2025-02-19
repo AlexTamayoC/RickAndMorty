@@ -1,12 +1,13 @@
-package com.example.rickandmorty
+package com.example.rickandmorty.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rickandmorty.network.ApiClient
-import com.example.rickandmorty.network.Character
-import com.example.rickandmorty.network.CharacterResponse
+import com.example.rickandmorty.model.Character
+import com.example.rickandmorty.model.CharacterResponse
+import com.example.rickandmorty.repository.Repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

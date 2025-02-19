@@ -1,4 +1,4 @@
-package com.example.rickandmorty
+package com.example.rickandmorty.ui.states
 
 sealed class ScreenState<T>(val data :T? = null,val message: String? = null){
 

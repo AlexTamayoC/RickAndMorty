@@ -1,14 +1,15 @@
-package com.example.rickandmorty
+package com.example.rickandmorty.ui
 
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rickandmorty.network.Character
+import com.example.rickandmorty.model.Character
 import android.widget.TextView
 import android.view.View
 import android.view.ViewGroup
 import coil.load
 import coil.transform.CircleCropTransformation
 import android.widget.ImageView
+import com.example.rickandmorty.R
 
 
 class MainAdapter(private val charactersList: MutableList<Character>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -1,5 +1,6 @@
 package com.example.rickandmorty.network
 
+import com.example.rickandmorty.model.CharacterResponse
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -27,8 +28,3 @@ object ApiClient {
     }
 }
 
-//Create an interface
-interface ApiService{
-    @GET("character")
-    fun fetchCharacters(@Query("page") page:String): Call<CharacterResponse>
-}
