@@ -34,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(createScrollListener())
-
-
         dataList = arrayListOf<Character>()
     }
 
